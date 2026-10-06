@@ -918,9 +918,12 @@ fn version(meta: &Meta) -> String {
     format!("{}-{}", meta.version_identifier, meta.source_release)
 }
 
-#[tracing::instrument(skip_all)]
+#[tracing::instrument(skip_all, fields(blocking_task_id = %task_id))]
 async fn block_all(tx: &mut Transaction, task_id: Id, queue: &impl TaskQueue) -> Result<()> {
-    let task_blocker = queue.get(task_id).ok_or_eyre("task missing from queue")?.blocker();
+    let Some(task_blocker) = queue.get(task_id).map(|task| task.blocker()) else {
+        warn!("Task missing from queue, nothing to block");
+        return Ok(());
+    };
 
     for dependent in queue.dependents(task_id) {
         transition(
