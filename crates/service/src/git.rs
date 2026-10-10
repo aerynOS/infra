@@ -17,7 +17,10 @@ pub async fn mirror(uri: &Uri, to: &Path) -> Result<(), process::Error> {
 
 /// git remote update
 pub async fn remote_update(path: &Path) -> Result<(), process::Error> {
-    process::output("git", |process| process.args(["remote", "update"]).current_dir(path)).await?;
+    process::output("git", |process| {
+        process.args(["remote", "update", "--prune"]).current_dir(path)
+    })
+    .await?;
 
     Ok(())
 }
