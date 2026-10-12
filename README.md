@@ -2,7 +2,7 @@
 
 [![docs](https://img.shields.io/badge/docs-passing-brightgreen)](https://serpent-os.github.io/infra-test/)
 
-**NB:** *The AerynOS infra is currently in development ("Alpha"), and is not supported outside of its use internally in the AerynOS project.*
+**NB:** *The aerynOS infra is currently in development ("Alpha"), and is not supported outside of its use internally in the aerynOS project.*
 
 Our infra is comprised of the Summit, Avalanche and Vessel service components built in Rust:
 
@@ -16,7 +16,7 @@ Our infra is comprised of the Summit, Avalanche and Vessel service components bu
 - `just` is used as a runner tool to streamline this.
 
 ```sh
-# on AerynOS
+# on aerynOS
 sudo moss sync -u
 sudo moss it docker-compose just 'binary(protoc)' -y
 sudo usermod -a -G docker "${USER}"
@@ -54,4 +54,4 @@ For testing only the summit frontend, use this command:
 
 ## License
 
-The AerynOS infra is available under the terms of the [MPL-2.0](https://spdx.org/licenses/MPL-2.0.html) licence.
+The aerynOS infra is available under the terms of the [MPL-2.0](https://spdx.org/licenses/MPL-2.0.html) licence.
