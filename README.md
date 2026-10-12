@@ -1,7 +1,5 @@
 # Infra
 
-[![docs](https://img.shields.io/badge/docs-passing-brightgreen)](https://serpent-os.github.io/infra-test/)
-
 **NB:** *The aerynOS infra is currently in development ("Alpha"), and is not supported outside of its use internally in the aerynOS project.*
 
 Our infra is comprised of the Summit, Avalanche and Vessel service components built in Rust:
