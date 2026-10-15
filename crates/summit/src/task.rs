@@ -125,7 +125,7 @@ pub enum Transition {
     /// Task has been superseded
     ///
     /// Must transition from open but not-inprogress statuses
-    Superseded { by: Id },
+    Superseded { reason: SupersededReason },
     /// Task is building
     ///
     /// Must transition from `new`
@@ -163,6 +163,14 @@ pub enum Transition {
     ///
     /// Only allowed from `building` status
     Requeue,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash, strum::Display)]
+pub enum SupersededReason {
+    #[strum(serialize = "task was replaced by task {0}")]
+    ReplacedBy(Id),
+    #[strum(serialize = "task was orphaned")]
+    Orphaned,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize, derive_more::AsRef, derive_more::Display)]
@@ -330,7 +338,7 @@ pub async fn transition(
                 info!(unblocked_by = %blocker, "Task fully unblocked");
             }
         }
-        Transition::Superseded { by } => {
+        Transition::Superseded { reason } => {
             // `superseded` can be reached from `blocked` so remove any blockers
             // for this task if they exist since they're no longer relevant
             if !task.blocked_by.is_empty() {
@@ -344,7 +352,7 @@ pub async fn transition(
                 .await
                 .context("set status")?;
 
-            info!(superseded_by = %by, "Task marked as superseded");
+            info!(%reason, "Task marked as superseded");
         }
         Transition::Building { builder } => {
             set_allocated_builder(tx, task.id, Some(builder))
@@ -605,19 +613,19 @@ async fn fix_orphaned(
             warn!(
                 task_id = %task.id,
                 build_id = task.build_id,
-                "Task no longer exists in repository, marking as failed"
+                "Task no longer exists in repository, marking as superseded"
             );
 
             transition(
                 tx,
                 task.id,
-                Transition::Failed {
-                    stashed_build_logs: None,
+                Transition::Superseded {
+                    reason: SupersededReason::Orphaned,
                 },
                 queue,
             )
             .await
-            .context(format!("transition task {} to failed", task.id))?;
+            .context(format!("transition task {} to superseded", task.id))?;
 
             tasks_updated = true;
         }
