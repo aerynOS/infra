@@ -114,7 +114,9 @@ pub(super) async fn create(
             task::transition(
                 tx,
                 superseded_task.id,
-                task::Transition::Superseded { by: task_id },
+                task::Transition::Superseded {
+                    reason: task::SupersededReason::ReplacedBy(task_id),
+                },
                 queue,
             )
             .await
