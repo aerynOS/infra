@@ -7,7 +7,10 @@ use service::{
     client::{AuthClient, Credentials, CredentialsAuth, SummitServiceClient},
     crypto::PublicKey,
     error,
-    grpc::proto::{common::Collectable, summit::builder_stream},
+    grpc::{
+        heartbeat::Heartbeat,
+        proto::{common::Collectable, summit::builder_stream},
+    },
 };
 use tokio::{
     select,
@@ -157,12 +160,12 @@ async fn connect_inner(
     let (notify_build_cancelled, _) = watch::channel(());
 
     let mut stream = resp.into_inner();
-    let mut interval = time::interval(Duration::from_secs(60));
+    let mut heartbeat = Heartbeat::new();
     let mut build_changed_receiver = notify_build_change.subscribe();
 
     loop {
         select! {
-            _ = interval.tick() => {
+            _ = heartbeat.tick() => {
                 let building = *building.lock().await;
 
                 // Only send task id if its being built for this summit instance
