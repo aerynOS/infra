@@ -659,6 +659,7 @@ async fn repository_manager(
                         repository_manager::Message::CommandResponse(response),
                     ));
                 }
+                repository_manager_stream::incoming::Event::Status(_) => {}
             }
         }
 

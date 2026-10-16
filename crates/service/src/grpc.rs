@@ -11,6 +11,7 @@ use tracing::{error, warn};
 use crate::error;
 
 pub mod auth;
+pub mod heartbeat;
 
 pub use service_grpc::*;
 

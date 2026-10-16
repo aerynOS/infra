@@ -5,9 +5,12 @@ use service::{
     Service,
     client::{AuthClient as _, Credentials, CredentialsAuth, SummitServiceClient},
     error,
-    grpc::proto::{
-        summit::repository_manager_stream,
-        vessel::{command, upgrade_format},
+    grpc::{
+        heartbeat::Heartbeat,
+        proto::{
+            summit::repository_manager_stream,
+            vessel::{command, upgrade_format},
+        },
     },
 };
 use tokio::{select, sync::mpsc, time};
@@ -96,12 +99,20 @@ async fn connect_inner(
         .await;
 
     let mut stream = resp.into_inner();
-    let mut interval = time::interval(Duration::from_secs(60));
+    let mut heartbeat = Heartbeat::new();
 
     loop {
         select! {
             // TODO: Status reporting: disk info, etc
-            _ = interval.tick() => {},
+            _ = heartbeat.tick() => {
+                let _ = sender
+                    .send(repository_manager_stream::Incoming {
+                        event: Some(repository_manager_stream::incoming::Event::Status(
+                            repository_manager_stream::Status {},
+                        )),
+                    })
+                    .await;
+            },
             event = worker_events.recv() => {
                 if let Some(event) = event {
                     match event {

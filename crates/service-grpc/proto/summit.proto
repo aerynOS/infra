@@ -78,6 +78,7 @@ message RepositoryManagerStream {
       uint64 import_succeeded = 3;
       uint64 import_failed = 4;
       vessel.Command.Response command = 5;
+      Status status = 6;
     }
   }
 
@@ -91,6 +92,8 @@ message RepositoryManagerStream {
   message Details {
     string grpc_uri = 1;
   }
+
+  message Status {}
 
   message RequestUploadToken {
     uint64 task_id = 1;
