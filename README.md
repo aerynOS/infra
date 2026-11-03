@@ -16,16 +16,9 @@ Our infra is comprised of the Summit, Avalanche and Vessel service components bu
 ```sh
 # on aerynOS
 sudo moss sync -u
-sudo moss it docker-compose just 'binary(protoc)' -y
+sudo moss pkg add docker-compose just 'binary(protoc)' -y
 sudo usermod -a -G docker "${USER}"
 sudo systemctl enable --now docker.socket docker.service
-sudo systemctl reboot
-```
-
-```sh
-# on solus:
-eopkg it docker docker-compose just protobuf-devel -y
-sudo usermod -a -G docker "${USER}"
 sudo systemctl reboot
 ```
 

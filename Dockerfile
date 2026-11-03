@@ -5,8 +5,9 @@ ENV RUSTUP_HOME="/usr/local/rustup" \
 RUN apk add --no-cache musl-dev openssl-dev openssl-libs-static git protoc
 WORKDIR /src
 RUN --mount=type=cache,target=/usr/local/cargo/registry \
+
     --mount=type=cache,target=/usr/local/cargo/git <<"EOT" /bin/sh
-    git clone https://github.com/AerynOS/os-tools /tools
+    git clone https://github.com/aerynOS/os-tools /tools
     cd /tools
     cargo install --path ./boulder
 EOT

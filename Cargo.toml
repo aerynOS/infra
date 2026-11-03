@@ -9,10 +9,10 @@ edition = "2024"
 rust-version = "1.88"
 
 [workspace.dependencies]
-dag = { git = "https://github.com/AerynOS/os-tools.git", rev = "31772a648c5d32b638b6a026477ef225f28a3c30" }
-moss = { git = "https://github.com/AerynOS/os-tools.git", rev = "31772a648c5d32b638b6a026477ef225f28a3c30" }
-stone = { git = "https://github.com/AerynOS/os-tools.git", rev = "31772a648c5d32b638b6a026477ef225f28a3c30" }
-stone_recipe = { git = "https://github.com/AerynOS/os-tools.git", rev = "31772a648c5d32b638b6a026477ef225f28a3c30" }
+dag = { git = "https://github.com/aerynOS/os-tools.git", rev = "31772a648c5d32b638b6a026477ef225f28a3c30" }
+moss = { git = "https://github.com/aerynOS/os-tools.git", rev = "31772a648c5d32b638b6a026477ef225f28a3c30" }
+stone = { git = "https://github.com/aerynOS/os-tools.git", rev = "31772a648c5d32b638b6a026477ef225f28a3c30" }
+stone_recipe = { git = "https://github.com/aerynOS/os-tools.git", rev = "31772a648c5d32b638b6a026477ef225f28a3c30" }
 
 arc-swap = "1.8.0"
 async-trait = "0.1.88"

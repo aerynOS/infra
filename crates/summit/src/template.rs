@@ -30,7 +30,7 @@ where
     S: Serialize,
 {
     render(name, ctx).map(Html).map_err(|err| {
-        error!(error=%err, "Failed to render minijinja tmeplate");
+        error!(error=%err, "Failed to render minijinja template");
 
         StatusCode::INTERNAL_SERVER_ERROR
     })

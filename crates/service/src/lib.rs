@@ -1,5 +1,5 @@
 #![warn(missing_docs)]
-//! Shared service code for AerynOS infrastructure
+//! Shared service code for aerynOS infrastructure
 
 pub use service_client as client;
 pub use service_core::{Service, Session, Token, auth, crypto, session, token};
