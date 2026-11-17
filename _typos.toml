@@ -1,0 +1,4 @@
+[files]
+# sqlx checksums applied migrations, so editing one (even a comment) stops
+# the service from starting on existing databases
+extend-exclude = ["crates/*/migrations/"]
